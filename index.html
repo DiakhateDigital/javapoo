@@ -1,13 +1,1115 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive Java OOP Learning Platform</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support de Révision Java POO</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation Sticky */
+        .nav-tabs {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-color);
+            display: flex;
+            overflow-x: auto;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .nav-tabs::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            color: var(--light-color);
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            padding: 30px 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 10px;
+        }
+
+        /* Component Table */
+        .component-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .component-table th,
+        .component-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .component-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .component-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .component-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Diagram Container */
+        .diagram-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        pre {
+            background:#2c3e50;
+            padding: 1em;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #ffffff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                padding: 5px 0;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .component-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Interactive Elements */
+        .expandable {
+            margin: 15px 0;
+        }
+
+        .expandable-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .expandable-header:hover {
+            background-color: #dfe6e9;
+        }
+
+        .expandable-content {
+            padding: 15px;
+            background-color: white;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .expandable.active .expandable-content {
+            display: block;
+        }
+
+        .expandable-icon {
+            transition: var(--transition);
+        }
+
+        .expandable.active .expandable-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Code Block */
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-keyword {
+            color: #c678dd;
+        }
+
+        .code-function {
+            color: #61afef;
+        }
+
+        .code-string {
+            color: #98c379;
+        }
+
+        .code-comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .code-number {
+            color: #d19a66;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .highlight-box.warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left-color: var(--warning-color);
+        }
+
+        .highlight-box.danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left-color: var(--accent-color);
+        }
+
+        .highlight-box.success {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left-color: var(--success-color);
+        }
+
+        /* UML Class Diagram */
+        .uml-class {
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .uml-class-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .uml-class-attributes,
+        .uml-class-methods {
+            padding: 10px;
+        }
+
+        .uml-class-attributes {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .uml-item {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sticky Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="introduction">Introduction</button>
+            <button class="tab-btn" data-tab="classes-objets">Classes & Objets</button>
+            <button class="tab-btn" data-tab="constructeurs">Constructeurs</button>
+            <button class="tab-btn" data-tab="encapsulation">Encapsulation</button>
+            <button class="tab-btn" data-tab="heritage">Héritage</button>
+            <button class="tab-btn" data-tab="polymorphisme">Polymorphisme</button>
+            <button class="tab-btn" data-tab="exercices">Exercices</button>
+            <button class="tab-btn" data-tab="qcm">QCM</button>
+        </div>
+
+        <!-- Tab Contents -->
+        <div id="introduction" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">Introduction à la POO en Java</h2>
+                <p>
+                    La Programmation Orientée Objet (POO) est un paradigme de programmation qui permet de modéliser des
+                    systèmes complexes
+                    en les décomposant en entités appelées objets.
+                </p>
+
+                <div class="highlight-box">
+                    <h3>Les 4 piliers de la POO :</h3>
+                    <ol>
+                        <li><strong>Encapsulation</strong> : Protection des données</li>
+                        <li><strong>Héritage</strong> : Réutilisation du code</li>
+                        <li><strong>Polymorphisme</strong> : Flexibilité des comportements</li>
+                        <li><strong>Abstraction</strong> : Simplification des concepts</li>
+                    </ol>
+                </div>
+
+                <div class="diagram-container">
+                    <h3>Comparaison Programmation Structurée vs POO</h3>
+                    <table class="component-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Programmation Structurée</th>
+                                <th>POO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Organisation</td>
+                                <td>Fonctions et procédures</td>
+                                <td>Objets et classes</td>
+                            </tr>
+                            <tr>
+                                <td>Données</td>
+                                <td>Séparées des traitements</td>
+                                <td>Intégrées aux objets</td>
+                            </tr>
+                            <tr>
+                                <td>Réutilisation</td>
+                                <td>Limitée</td>
+                                <td>Élevée (héritage)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="expandable">
+                    <div class="expandable-header">
+                        <span>Exemple concret d'objet</span>
+                        <span class="expandable-icon">▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <p>Considérons un objet <strong>CompteBancaire</strong> :</p>
+                        <div class="code-block">
+                            <pre><code class="language-java">
+// Attributs (état)
+<span class="code-keyword">private</span> String numero;
+<span class="code-keyword">private</span> <span class="code-keyword">double</span> solde;
+
+// Méthodes (comportement)
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> deposer(<span class="code-keyword">double</span> montant) {
+    <span class="code-keyword">this</span>.solde += montant;
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> retirer(<span class="code-keyword">double</span> montant) {
+    <span class="code-keyword">if</span> (montant <= <span class="code-keyword">this</span>.solde) {
+        <span class="code-keyword">this</span>.solde -= montant;
+    }
+}
+                        </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="classes-objets" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Classes et Objets</h2>
+            <p>
+                Une classe est un modèle (blueprint) qui définit la structure et le comportement des objets.
+                Un objet est une instance concrète d'une classe.
+            </p>
+
+            <div class="uml-class">
+                <div class="uml-class-header">Personne</div>
+                <div class="uml-class-attributes">
+                    <div class="uml-item">- nom : String</div>
+                    <div class="uml-item">- age : int</div>
+                </div>
+                <div class="uml-class-methods">
+                    <div class="uml-item">+ parler() : void</div>
+                    <div class="uml-item">+ sePresenter() : void</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-java">
+// Définition de la classe
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Personne</span> {
+
+    <span class="code-comment">// Attributs</span>
+    <span class="code-keyword">private</span> String nom;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> age;
+
+    <span class="code-comment">// Méthodes</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">parler</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Bonjour !"</span>);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">sePresenter</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(
+            <span class="code-string">"Je m'appelle "</span> + nom + <span class="code-string">" et j'ai "</span> + age + <span class="code-string">" ans."</span>);
+    }
+}
+
+// Création d'objets
+Personne personne1 = <span class="code-keyword">new</span> <span class="code-function">Personne</span>();
+personne1.<span class="code-function">setNom</span>(<span class="code-string">"Alice"</span>);
+personne1.<span class="code-function">setAge</span>(<span class="code-number">25</span>);
+personne1.<span class="code-function">sePresenter</span>();
+            </code></pre>
+            </div>
+
+            <div class="highlight-box success">
+                <h3>Bonnes pratiques pour les classes :</h3>
+                <ul>
+                    <li>Nommer les classes avec des noms substantifs (Personne, CompteBancaire)</li>
+                    <li>Utiliser PascalCase pour les noms de classes</li>
+                    <li>Déclarer les attributs en <code>private</code></li>
+                    <li>Fournir des méthodes publiques pour interagir avec l'objet</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="constructeurs" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Constructeurs</h2>
+            <p>Les constructeurs permettent d'initialiser les objets lors de leur création.</p>
+
+            <div class="code-block">
+                <pre><code class="language-java">
+// Définition de la classe
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Livre</span> {
+
+    <span class="code-comment">// Attributs</span>
+    <span class="code-keyword">private</span> String titre;
+    <span class="code-keyword">private</span> String auteur;
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> annee;
+
+    <span class="code-comment">// Constructeur par défaut</span>
+    <span class="code-keyword">public</span> <span class="code-function">Livre</span>() {
+        <span class="code-keyword">this</span>.titre = <span class="code-string">"Inconnu"</span>;
+        <span class="code-keyword">this</span>.auteur = <span class="code-string">"Anonyme"</span>;
+        <span class="code-keyword">this</span>.annee = <span class="code-number">0</span>;
+    }
+
+    <span class="code-comment">// Constructeur avec paramètres</span>
+    <span class="code-keyword">public</span> <span class="code-function">Livre</span>(String titre, String auteur, <span class="code-keyword">int</span> annee) {
+        <span class="code-keyword">this</span>.titre = titre;
+        <span class="code-keyword">this</span>.auteur = auteur;
+        <span class="code-keyword">this</span>.annee = annee;
+    }
+
+    <span class="code-comment">// Surcharge de constructeur</span>
+    <span class="code-keyword">public</span> <span class="code-function">Livre</span>(String titre) {
+        <span class="code-keyword">this</span>(); <span class="code-comment">// Appelle le constructeur par défaut</span>
+        <span class="code-keyword">this</span>.titre = titre;
+    }
+}
+            </code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Caractéristiques des constructeurs :</h3>
+                <ul>
+                    <li>Même nom que la classe</li>
+                    <li>Pas de type de retour (même pas <code>void</code>)</li>
+                    <li>Peut être surchargé (plusieurs versions)</li>
+                    <li>Peut appeler un autre constructeur avec <code>this()</code></li>
+                </ul>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header">
+                    <span>Exemple complet d'utilisation</span>
+                    <span class="expandable-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <div class="code-block">
+                        <pre><code class="language-java">
+// Création d'objets avec différents constructeurs
+Livre livre1 = <span class="code-keyword">new</span> <span class="code-function">Livre</span>(); <span class="code-comment">// Constructeur par défaut</span>
+Livre livre2 = <span class="code-keyword">new</span> <span class="code-function">Livre</span>(<span class="code-string">"Le Petit Prince"</span>); <span class="code-comment">// Constructeur avec titre</span>
+Livre livre3 = <span class="code-keyword">new</span> <span class="code-function">Livre</span>(<span class="code-string">"1984"</span>, <span class="code-string">"George Orwell"</span>, <span class="code-number">1949</span>); <span class="code-comment">// Constructeur complet</span>
+
+System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Livre 1: "</span> + livre1.<span class="code-function">getTitre</span>());
+System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Livre 3: "</span> + livre3.<span class="code-function">getAuteur</span>());
+                    </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="encapsulation" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Encapsulation</h2>
+            <p>
+                Principe fondamental qui consiste à protéger les données d'une classe en les rendant privées
+                et en fournissant des méthodes publiques pour y accéder.
+            </p>
+
+            <div class="code-block">
+                <pre><code class="language-java">
+// Définition de la classe
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">CompteBancaire</span> {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> solde;
+
+    <span class="code-comment">// Getter</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">double</span> <span class="code-function">getSolde</span>() {
+        <span class="code-keyword">return</span> <span class="code-keyword">this</span>.solde;
+    }
+
+    <span class="code-comment">// Setter avec validation</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">setSolde</span>(<span class="code-keyword">double</span> nouveauSolde) {
+        <span class="code-keyword">if</span> (nouveauSolde >= <span class="code-number">0</span>) {
+            <span class="code-keyword">this</span>.solde = nouveauSolde;
+        } <span class="code-keyword">else</span> {
+            System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Erreur: solde négatif"</span>);
+        }
+    }
+
+    <span class="code-comment">// Méthode métier</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">deposer</span>(<span class="code-keyword">double</span> montant) {
+        <span class="code-keyword">if</span> (montant > <span class="code-number">0</span>) {
+            <span class="code-keyword">this</span>.solde += montant;
+        }
+    }
+}
+            </code></pre>
+            </div>
+
+            <div class="highlight-box warning">
+                <h3>Pourquoi l'encapsulation ?</h3>
+                <ul>
+                    <li>Contrôle des accès aux données</li>
+                    <li>Validation des valeurs</li>
+                    <li>Maintenance facilitée</li>
+                    <li>Évolution du code sans impact sur les utilisateurs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="heritage" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Héritage</h2>
+            <p>
+                Mécanisme permettant à une classe (classe fille) d'hériter des caractéristiques
+                (attributs et méthodes) d'une autre classe (classe mère).
+            </p>
+
+            <div class="diagram-container">
+                <pre>
+                                                                    |--------- Animal ---------|
+                                                                    | - nom  : String          |
+                                                                    | - age  : int             |
+                                                                    |--------------------------|
+                                                                    | + manger()   : void      |
+                                                                    | + dormir()   : void      |
+                                                                    | + parler()   : void      |
+                                                                    |--------------------------|
+                                                                            ▲
+                                                        ┌────────────────────┼────────────────────┐
+                                                        │                    │                    │
+                                                        ▼                    ▼                    ▼
+                                                |------- Chien -------|  |-------- Chat --------|  |------ Oiseau ------|
+                                                | - race : String     |  | - couleur : String   |  | - ailes : boolean  |
+                                                |---------------------|  |----------------------|  |--------------------|
+                                                | + aboyer() : void   |  | + miauler() : void   |  | + chanter() : void |
+                                                | + parler() : void   |  | + parler() : void    |  | + parler() : void  |
+                                                |---------------------|  |----------------------|  |--------------------|
+</pre>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-java">
+// Classe mère
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Animal</span> {
+
+    <span class="code-keyword">protected</span> String nom;
+    <span class="code-keyword">protected</span> <span class="code-keyword">int</span> age;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">manger</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(nom + <span class="code-string">" mange."</span>);
+    }
+}
+
+// Classe fille
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Chien</span> <span class="code-keyword">extends</span> Animal {
+
+    <span class="code-keyword">private</span> String race;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">aboyer</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Wouf! Wouf!"</span>);
+    }
+
+    <span class="code-comment">// Redéfinition de méthode</span>
+    <span class="code-keyword">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">manger</span>() {
+        <span class="code-keyword">super</span>.<span class="code-function">manger</span>(); <span class="code-comment">// Appel à la méthode parente</span>
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Le chien mange rapidement."</span>);
+    }
+}
+            </code></pre>
+            </div>
+
+            <div class="highlight-box danger">
+                <h3>Attention :</h3>
+                <ul>
+                    <li>Java ne supporte pas l'héritage multiple</li>
+                    <li>Utilisez <code>super</code> pour accéder à la classe parente</li>
+                    <li>Les attributs privés ne sont pas hérités</li>
+                    <li>Préférez la composition à l'héritage quand c'est possible</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="polymorphisme" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Polymorphisme</h2>
+            <p>
+                Capacité d'un objet à prendre plusieurs formes, permettant d'utiliser une interface unique pour
+                différents types.
+            </p>
+
+            <div class="highlight-box">
+                <h3>Deux types de polymorphisme :</h3>
+                <ol>
+                    <li><strong>Surcharge (Overloading)</strong> : Même nom de méthode, signatures différentes</li>
+                    <li><strong>Redéfinition (Overriding)</strong> : Même signature, implémentation différente dans une
+                        sous-classe</li>
+                </ol>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-java">
+// Surcharge (Overloading)
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Calculatrice</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">int</span> <span class="code-function">additionner</span>(<span class="code-keyword">int</span> a, <span class="code-keyword">int</span> b) {
+        <span class="code-keyword">return</span> a + b;
+    }
+    
+    <span class="code-keyword">public</span> <span class="code-keyword">double</span> <span class="code-function">additionner</span>(<span class="code-keyword">double</span> a, <span class="code-keyword">double</span> b) {
+        <span class="code-keyword">return</span> a + b;
+    }
+}
+
+// Redéfinition (Overriding)
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Animal</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">parler</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"L'animal émet un son."</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Chien</span> <span class="code-keyword">extends</span> Animal {
+    <span class="code-keyword">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">parler</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Le chien aboie."</span>);
+    }
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Chat</span> <span class="code-keyword">extends</span> Animal {
+    <span class="code-keyword">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">parler</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(<span class="code-string">"Le chat miaule."</span>);
+    }
+}
+
+// Utilisation du polymorphisme
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Main</span> {
+    <span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-keyword">void</span> <span class="code-function">main</span>(String[] args) {
+        Animal[] animaux = <span class="code-keyword">new</span> Animal[<span class="code-number">3</span>];
+        animaux[<span class="code-number">0</span>] = <span class="code-keyword">new</span> <span class="code-function">Animal</span>();
+        animaux[<span class="code-number">1</span>] = <span class="code-keyword">new</span> <span class="code-function">Chien</span>();
+        animaux[<span class="code-number">2</span>] = <span class="code-keyword">new</span> <span class="code-function">Chat</span>();
+
+        <span class="code-keyword">for</span> (Animal animal : animaux) {
+            animal.<span class="code-function">parler</span>(); <span class="code-comment">// Appel de la méthode polymorphe</span>
+        }
+    }
+}
+            </code></pre>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header">
+                    <span>Exemple complet avec polymorphisme</span>
+                    <span class="expandable-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <div class="code-block">
+                        <pre><code class="language-java">
+Animal[] animaux = <span class="code-keyword">new</span> Animal[<span class="code-number">3</span>];
+animaux[<span class="code-number">0</span>] = <span class="code-keyword">new</span> <span class="code-function">Animal</span>();
+animaux[<span class="code-number">1</span>] = <span class="code-keyword">new</span> <span class="code-function">Chien</span>();
+animaux[<span class="code-number">2</span>] = <span class="code-keyword">new</span> <span class="code-function">Chat</span>();
+
+<span class="code-keyword">for</span> (Animal animal : animaux) {
+    animal.<span class="code-function">parler</span>(); <span class="code-comment">// Appel de la méthode polymorphe</span>
+}
+                    </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="exercices" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">Exercices Pratiques</h2>
+
+            <!-- Exercice 1 -->
+            <div class="highlight-box">
+                <h3>Exercice 1 : Classe CompteBancaire</h3>
+                <p>Créez une classe <strong>CompteBancaire</strong> avec :</p>
+                <ul>
+                    <li>Attributs privés : numeroCompte (String), solde (double), proprietaire (String)</li>
+                    <li>Un constructeur initialisant ces attributs</li>
+                    <li>Méthodes : deposer(), retirer(), afficherSolde()</li>
+                    <li>Ajoutez des validations (solde ne peut pas être négatif)</li>
+                </ul>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header">
+                    <span>Correction Exercice 1</span>
+                    <span class="expandable-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <div class="code-block">
+                        <pre><code class="language-java">
+// Définition de la classe CompteBancaire
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">CompteBancaire</span> {
+
+    <span class="code-keyword">private</span> String numeroCompte;
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> solde;
+    <span class="code-keyword">private</span> String proprietaire;
+
+    <span class="code-keyword">public</span> <span class="code-function">CompteBancaire</span>(String numero, String prop) {
+        <span class="code-keyword">this</span>.numeroCompte = numero;
+        <span class="code-keyword">this</span>.proprietaire = prop;
+        <span class="code-keyword">this</span>.solde = <span class="code-number">0.0</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">deposer</span>(<span class="code-keyword">double</span> montant) {
+        <span class="code-keyword">if</span> (montant > <span class="code-number">0</span>) {
+            <span class="code-keyword">this</span>.solde += montant;
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">boolean</span> <span class="code-function">retirer</span>(<span class="code-keyword">double</span> montant) {
+        <span class="code-keyword">if</span> (montant > <span class="code-number">0</span> && montant <= <span class="code-keyword">this</span>.solde) {
+            <span class="code-keyword">this</span>.solde -= montant;
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        }
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">afficherSolde</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(
+            <span class="code-string">"Solde du compte "</span> + numeroCompte + <span class="code-string">" : "</span> + solde);
+    }
+}
+                    </code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercice 2 -->
+            <div class="highlight-box warning">
+                <h3>Exercice 2 : Héritage - Véhicules</h3>
+                <p>Créez un système de classes pour représenter différents véhicules :</p>
+                <ol>
+                    <li>Classe mère <strong>Véhicule</strong> avec marque, année, prix</li>
+                    <li>Classes filles <strong>Voiture</strong> (nombrePortes), <strong>Camion</strong> (capacitéCharge)
+                    </li>
+                    <li>Redéfinissez une méthode <strong>afficherInfos()</strong> dans chaque classe</li>
+                    <li>Créez un tableau de Véhicules contenant différents types</li>
+                </ol>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header">
+                    <span>Correction Exercice 2</span>
+                    <span class="expandable-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <div class="code-block">
+                        <pre><code class="language-java">
+// Classe mère Vehicule
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Vehicule</span> {
+
+    <span class="code-keyword">protected</span> String marque;
+    <span class="code-keyword">protected</span> <span class="code-keyword">int</span> annee;
+    <span class="code-keyword">protected</span> <span class="code-keyword">double</span> prix;
+
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">afficherInfos</span>() {
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(
+            <span class="code-string">"Marque: "</span> + marque + <span class="code-string">", Année: "</span> + annee);
+    }
+}
+
+// Classe fille Voiture
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Voiture</span> <span class="code-keyword">extends</span> Vehicule {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">int</span> nombrePortes;
+
+    <span class="code-keyword">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">afficherInfos</span>() {
+        <span class="code-keyword">super</span>.<span class="code-function">afficherInfos</span>();
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(
+            <span class="code-string">"Type: Voiture, Portes: "</span> + nombrePortes);
+    }
+}
+
+// Classe fille Camion
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> <span class="code-function">Camion</span> <span class="code-keyword">extends</span> Vehicule {
+
+    <span class="code-keyword">private</span> <span class="code-keyword">double</span> capaciteCharge;
+
+    <span class="code-keyword">@Override</span>
+    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">afficherInfos</span>() {
+        <span class="code-keyword">super</span>.<span class="code-function">afficherInfos</span>();
+        System.<span class="code-keyword">out</span>.<span class="code-function">println</span>(
+            <span class="code-string">"Type: Camion, Charge: "</span> + capaciteCharge + <span class="code-string">" tonnes"</span>);
+    }
+}
+                    </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ <div id="qcm" class="tab-content">
+    <div class="card">
+        <h2 class="card-title">QCM d'Évaluation POO Java</h2>
+        <button onclick="checkAnswers()" class="btn-check">Vérifier les réponses</button>
+        <div id="results" class="results-box"></div>
+
+        <!-- 📌 Section 1 : Classes en Java -->
+        <div class="highlight-box">
+            <h3>Question 1 : Classes et Objets</h3>
+            <p>Quelle affirmation est vraie concernant les classes en Java ?</p>
+            <form>
+                <label><input type="radio" name="q1" value="a"> Une classe peut être instanciée sans constructeur</label><br>
+                <label><input type="radio" name="q1" value="b" data-correct> Une classe est un modèle pour créer des objets</label><br>
+                <label><input type="radio" name="q1" value="c"> Une classe ne peut contenir que des méthodes</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> B. Une classe est un modèle (template) pour créer des objets.<br>
+                <strong>Explication :</strong> En POO, une classe définit la structure et le comportement que ses instances (objets) auront.
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Question 2 : Relation classe-objet</h3>
+            <p>Quelle est la relation entre une classe et un objet ?</p>
+            <form>
+                <label><input type="radio" name="q2" value="a"> Une classe est une instance d'un objet</label><br>
+                <label><input type="radio" name="q2" value="b" data-correct> Un objet est une instance d'une classe</label><br>
+                <label><input type="radio" name="q2" value="c"> Il n'y a pas de relation entre eux</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> B. Un objet est une instance d'une classe.<br>
+                <strong>Exemple :</strong> <code>Voiture maVoiture = new Voiture();</code> → <code>maVoiture</code> est un objet instance de la classe <code>Voiture</code>.
+            </div>
+        </div>
+
+        <!-- 📌 Section 2 : Encapsulation -->
+        <div class="highlight-box warning">
+            <h3>Question 3 : Encapsulation</h3>
+            <p>Pourquoi utilise-t-on des getters et setters dans une classe Java ?</p>
+            <form>
+                <label><input type="radio" name="q3" value="a"> Pour rendre le code plus difficile à comprendre</label><br>
+                <label><input type="radio" name="q3" value="b" data-correct> Pour permettre un accès contrôlé aux attributs privés</label><br>
+                <label><input type="radio" name="q3" value="c"> Parce que Java l'exige</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> B. Contrôle d'accès aux attributs.<br>
+                <strong>Avantage :</strong> Permet de valider les données avant modification (ex: vérifier qu'un âge n'est pas négatif).
+            </div>
+        </div>
+
+        <!-- 📌 Section 3 : Héritage -->
+        <div class="highlight-box danger">
+            <h3>Question 4 : Héritage</h3>
+            <p>Quelle affirmation est fausse concernant l'héritage en Java ?</p>
+            <form>
+                <label><input type="radio" name="q4" value="a" data-correct> Une classe peut hériter de plusieurs classes</label><br>
+                <label><input type="radio" name="q4" value="b"> Les méthodes peuvent être redéfinies</label><br>
+                <label><input type="radio" name="q4" value="c"> Le mot-clé super permet d'accéder à la classe parente</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> A. Java ne permet pas l'héritage multiple de classes (mais permet d'implémenter plusieurs interfaces).
+            </div>
+        </div>
+
+        <!-- 📌 Section 4 : Polymorphisme -->
+        <div class="highlight-box success">
+            <h3>Question 5 : Polymorphisme</h3>
+            <p>Qu'est-ce que le polymorphisme en Java ?</p>
+            <form>
+                <label><input type="radio" name="q5" value="a"> Capacité d'une méthode à avoir plusieurs implémentations</label><br>
+                <label><input type="radio" name="q5" value="b"> Capacité d'une variable à référencer différents types d'objets</label><br>
+                <label><input type="radio" name="q5" value="c" data-correct> Les deux réponses précédentes</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> C. Le polymorphisme inclut à la fois la redéfinition de méthodes et la possibilité d'utiliser une référence parente pour un objet enfant.
+            </div>
+        </div>
+
+        <!-- Questions supplémentaires POO (remplacement des questions surfaces) -->
+        <div class="highlight-box">
+            <h3>Question 6 : Constructeurs</h3>
+            <p>Que fait le constructeur par défaut en Java ?</p>
+            <form>
+                <label><input type="radio" name="q6" value="a"> Initialise tous les attributs à 0/null</label><br>
+                <label><input type="radio" name="q6" value="b" data-correct> Appelle le constructeur de la classe parente</label><br>
+                <label><input type="radio" name="q6" value="c"> Crée automatiquement les getters/setters</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> B. Le constructeur par défaut appelle implicitement <code>super()</code>.
+            </div>
+        </div>
+
+        <div class="highlight-box warning">
+            <h3>Question 7 : Modificateurs d'accès</h3>
+            <p>Quel modificateur permet d'accéder à un attribut depuis n'importe quelle classe du même package ?</p>
+            <form>
+                <label><input type="radio" name="q7" value="a" data-correct> (aucun modificateur)</label><br>
+                <label><input type="radio" name="q7" value="b"> protected</label><br>
+                <label><input type="radio" name="q7" value="c"> private</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> A. Le modificateur "package-private" (pas de mot-clé) est le niveau par défaut.
+            </div>
+        </div>
+
+        <!-- Ajoutez les autres questions ici avec le même format -->
+
+        <div class="highlight-box success">
+            <h3>Question 20 : Interfaces</h3>
+            <p>Quelle caractéristique est vraie pour les interfaces Java ?</p>
+            <form>
+                <label><input type="radio" name="q20" value="a"> Peuvent contenir des constructeurs</label><br>
+                <label><input type="radio" name="q20" value="b" data-correct> Permettent l'héritage multiple</label><br>
+                <label><input type="radio" name="q20" value="c"> Peuvent avoir des méthodes implémentées (avant Java 8)</label>
+            </form>
+            <div class="explanation" style="display:none;">
+                <strong>Réponse correcte :</strong> B. Une classe peut implémenter plusieurs interfaces.<br>
+                <strong>Note :</strong> Depuis Java 8, les interfaces peuvent avoir des méthodes "default".
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function checkAnswers() {
+    let score = 0;
+    const totalQuestions = 20; // Ajustez selon le nombre réel
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+
+    document.querySelectorAll('[data-correct]').forEach(correctAnswer => {
+        const questionDiv = correctAnswer.closest('.highlight-box');
+        const explanation = questionDiv.querySelector('.explanation');
+        const isChecked = correctAnswer.checked;
+
+        if (isChecked) {
+            score++;
+            questionDiv.style.border = '2px solid #4CAF50';
+        } else {
+            questionDiv.style.border = '2px solid #F44336';
+        }
+        explanation.style.display = 'block';
+    });
+
+    resultsDiv.innerHTML = `<p>Score : ${score}/${totalQuestions} (${Math.round(score/totalQuestions*100)}%)</p>`;
+}
+</script>
+
+<style>
+.btn-check {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.results-box {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.explanation {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #e9f7ef;
+    border-left: 4px solid #4CAF50;
+}
+</style>
+    <script>
+        // Tab Navigation System
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Expandable sections functionality
+            const expandableHeaders = document.querySelectorAll('.expandable-header');
+
+            expandableHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const expandable = header.parentElement;
+                    expandable.classList.toggle('active');
+                });
+            });
+
+            // Show answers for QCM
+            const showAnswerButtons = document.querySelectorAll('.show-answer');
+            showAnswerButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+
+            // Responsive adjustments
+            function handleResize() {
+                // Add any responsive adjustments here if needed
+            }
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        });
+    </script>
+</body>
+
 </html>
